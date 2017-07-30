@@ -1,55 +1,36 @@
 # Docker images for Open Source bigdata/hadoop projects
 
-This is the umbrella project for all of my docker images related to Apache Hadoop and other bigdata related Apache and non-apache projects.
+Flokkr is an umbrella github organization to collect all of the containerization work for Apache bigdata/datascience projects such as Apache Hadoop or Apache Spark.
 
-The docker images are in separated repository:
+On high level there are two main kind of repositories under the organization. Containers and runtime configuration examples.
 
-| name                                                                     | function                                                                 |
-|--------------------------------------------------------------------------|--------------------------------------------------------------------------|
-| [bigdata-base](https://github.com/elek/docker-bigdata-base)              | Special image contains base packages and the config loading scripts      |    
-| [docker-hadoop](https://github.com/elek/docker-hadoop)                   | Apache Hadoop components (hdfs/yarn)                                     |
-| [docker-spark](https://github.com/elek/docker-spark)                     | Apache Spark                                                             |
-| [docker-zeppelin](https://github.com/elek/docker-zeppelin)               | Apache Zeppelin                                                          |
-| [docker-zookeeper](https://github.com/elek/docker-zookeeper)             | Apache Zookeeper                                                         |
-| [docker-kafka](https://github.com/elek/docker-kafka)                     | Apache Kafka                                                             |
-| [docker-hbase](https://github.com/elek/docker-hbase)                     | Apache HBase                                                             |
-| [docker-phoenix](https://github.com/elek/docker-phoenix)                 | Apache Phoenix                                                           |
-| [docker-livy](https://github.com/elek/docker-livy)                       | Cloudera Livy                                                            |
-| [docker-hive](https://github.com/elek/docker-hive) (experimental)        | Apache Hive                                                              |
-| [docker-storm](https://github.com/elek/docker-storm)                     | Apache Storm                                                             |
-| [krb5](https://github.com/elek/docker-krb5) (for development only)       | MIT kerberos server                                                      |
-| [docker-consul-composer](https://github.com/elek/docker-consul-composer) | Special image to dynamically start compose containers based on docker-compose in a Consul server |
+### Containers
+
+All of the containers are based on one smart baseimage defined in [flokkr/docker-baseimage](https://github.com/flokkr/docker-baseimage). It contains all the configuration loading script (based on environment variables or consul servers) and other extensions (eg. btrace instrumentation).
+
+All the other containers can be found with [docker-](https://github.com/search?q=org%3Aflokkr+docker) prefix under the flokkr organization.
+
+The containers are usually built on travis-ci and pushed to the docker hub instead to use dockerhub automatic buidls due to the limitation of the dockerhub (for example it's hard to generate matrix builds with all the older versions). 
+
+| Repository                               | Product                                  |
+| ---------------------------------------- | ---------------------------------------- |
+| [docker-baseimage](https://github.com/flokkr/docker-baseimage) | Base image with all the configuration loading magic |
+| [docker-hadoop](https://github.com/flokkr/docker-hadoop) | Apache Hadoop components (hdfs/yarn)     |
+| [docker-spark](https://github.com/flokkr/docker-spark) | Apache Spark components                  |
+| [docker-zeppelin](https://github.com/flokkr/docker-zeppelin) | Apache Zeppelin interface                |
+| [docker-krb5](https://github.com/flokkr/docker-krb5) | Highly insecure kerberos container, with an open REST api to request new kerberos keytab files. |
+
+**Note**: previous version of the containers (and some not yet migrated) can be found under the [github.com/elek](https://github.com/elek) account.
+
+### Runtime
+
+Docker image creation is easy, just a few line to download and unpack the Apache projects. The tricky part is how the containers could work together: service discovery, configuration management, data locality, multi-tenancy, etc.
+
+There are various examples how the containers could be used and each of them have a separated repository with the [runtime](https://github.com/search?q=org%3Aflokkr+docker)- prefix.
 
 
-All of the docker images contains the component extracted from the open source distribution and some advanced configuration loading mechanism.
-
-Currently there are two main configuration use cases:
-
- * For using local docker-compose files we use the [envtoconf](https://github.com/elek/envtoconf) utility which converts environment variables to configuration files according to the naming convention. (eg. `CORE-SITE.XML_fs.default.name="hdfs://localhost:9000"` will be converted to a well formed hadoop xml configuration)
- *  For using a multi host environment we use the [consul-launcher](https://github.com/elek/consul-launcher) which downloads the configuration from consul and launch the specific starter. (It also listens to the changes and restart the process similar to the consul-template)
-
-There is also a [simple python tool][consync] to upload configuration (the consul directory of this repository) to the consul (only required if consul is used for configuration management).
-
-This repository contains example cluster configuration, using different ways to configure (environment variables, consul, spring config server) and provision (docker-compose, ansible, consul-composer) the products
-
-## Examples
-
-| directory              | configuration type    | docker container starter        | provisioning                                  | cluster type  | network (*)                    |
-|------------------------|-----------------------|---------------------------------|-----------------------------------------------|---------------|--------------------------------|
-| [simple][simple]       | environment variables | docker-compose                  |                                               | local         | Using host network             |
-| [compose][compose]     | environment variables | docker-compose                  |                                               | local         | Using dedicated docker network |
-| [consul][consulconfig] | consul                | consul-composer (docker-compose)|  [consul-compose][consulcompose](+ansible)    | local/cluster | Using host network             |
-| [ansible][ansible]     | environment variables | docker (ansible module)         | ansible                                       | cluster       | Using host network             |
-
-* Host network is not a limitation just the example uses this simplified approach.
-
-## Locally with host network and docker-compose
-
-This is the most simple option. All of the application will use the network of the localhost and the default ports will be available on the localhost. See the simple subdirectory for the docker-compose file of this option.
-
-[simple]: https://github.com/elek/bigdata-docker/blob/master/simple/README.md
-[compose]: https://github.com/elek/bigdata-docker/blob/master/compose/README.md
-[ansible]: https://github.com/elek/bigdata-docker/blob/master/ansible/README.md
-[consulconfig]: https://github.com/elek/bigdata-docker-consul/blob/master/README.md
-[consulcompose]: https://github.com/elek/docker-consul-compose
-[consync]: https://github.com/elek/consync
+| Repository                               | Details                                  |
+| ---------------------------------------- | ---------------------------------------- |
+| [runtime-compose](http://github.com/flokkr/runtime-compose) | docker-composed based pseudo clusters (multiple containers but only for one hosts). Configuration are defined by environment variables. For development and local experiments. |
+| [runtime-consul](http://github.com/flokkr/runtime-consul) | Multi-host real cluster with consul (for storing the configuration and docker-compose definitions) and docker-compose. Small scripts help to maintain the cluster state (restart components on every config change). Full data-locality is achieved by using docker host network. |
+| [runtime-swarm](http://github.com/flokkr/runtime-swarm) (WIP) | Similar to the previous one, but the container scheduling part is simplified with docker-compose + swarm. No host network, so no data-locality. Environment variable based configuration management. |
