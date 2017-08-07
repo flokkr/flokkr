@@ -31,6 +31,7 @@ There are various examples how the containers could be used and each of them hav
 
 | Repository                               | Details                                  |
 | ---------------------------------------- | ---------------------------------------- |
-| [runtime-compose](http://github.com/flokkr/runtime-compose) | docker-composed based pseudo clusters (multiple containers but only for one hosts). Configuration are defined by environment variables. For development and local experiments. |
-| [runtime-consul](http://github.com/flokkr/runtime-consul) | Multi-host real cluster with consul (for storing the configuration and docker-compose definitions) and docker-compose. Small scripts help to maintain the cluster state (restart components on every config change). Full data-locality is achieved by using docker host network. |
-| [runtime-swarm](http://github.com/flokkr/runtime-swarm) (WIP) | Similar to the previous one, but the container scheduling part is simplified with docker-compose + swarm. No host network, so no data-locality. Environment variable based configuration management. |
+| [runtime-compose](https://github.com/flokkr/runtime-compose) | docker-composed based pseudo clusters (multiple containers but only for one hosts). Configuration are defined by environment variables. For development and local experiments. |
+| [runtime-consul](https://github.com/flokkr/runtime-consul) | Multi-host real cluster with consul (for storing the configuration and docker-compose definitions) and docker-compose. Small scripts help to maintain the cluster state (restart components on every config change). Full data-locality is achieved by using docker host network. |
+| [runtime-swarm](https://github.com/flokkr/runtime-swarm) | Similar to the previous one, but the container scheduling part is simplified with docker-compose + swarm. No host network, so no data-locality. Environment variable based configuration management. |
+| [runtime-kubernetes](https://gthub.com/flokkr/runtime-kubernetes) | Kubernetes managed cluster with kubernetes ConfigMap based configuration set. |
