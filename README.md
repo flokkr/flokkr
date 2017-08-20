@@ -2,7 +2,7 @@
 
 Flokkr is an umbrella github organization to collect all of the containerization work for Apache bigdata/datascience projects such as Apache Hadoop or Apache Spark.
 
-On high level there are two main kind of repositories under the organization. Containers and runtime configuration examples.
+On high level, there are two main kind of repositories under the organization. Containers and runtime configuration examples.
 
 ### Containers
 
@@ -10,13 +10,17 @@ All of the containers are based on one smart baseimage defined in [flokkr/docker
 
 All the other containers can be found with [docker-](https://github.com/search?q=org%3Aflokkr+docker) prefix under the flokkr organization.
 
-The containers are usually built on travis-ci and pushed to the docker hub instead to use dockerhub automatic buidls due to the limitation of the dockerhub (for example it's hard to generate matrix builds with all the older versions). 
+The containers are usually built on travis-ci and pushed to the docker hub instead to use dockerhub automatic buidls due to the limitation of the dockerhub (for example it's hard to generate matrix builds with all the older versions).
 
 | Repository                               | Product                                  |
 | ---------------------------------------- | ---------------------------------------- |
 | [docker-baseimage](https://github.com/flokkr/docker-baseimage) | Base image with all the configuration loading magic |
 | [docker-hadoop](https://github.com/flokkr/docker-hadoop) | Apache Hadoop components (hdfs/yarn)     |
-| [docker-spark](https://github.com/flokkr/docker-spark) | Apache Spark components                  |
+| [docker-spark](https://github.com/flokkr/docker-spark) | Apache Spark components  
+| [docker-storm](https://github.com/flokkr/docker-spark) | Apache Storm components                  |                |
+| [docker-zookeeper](https://github.com/flokkr/docker-spark) | Apache Zookeeper components                  |
+| [docker-kafka](https://github.com/flokkr/docker-spark) | Apache Kafka components                  |
+| [docker-hbase](https://github.com/flokkr/docker-spark) | Apache HBase components                  |
 | [docker-zeppelin](https://github.com/flokkr/docker-zeppelin) | Apache Zeppelin interface                |
 | [docker-krb5](https://github.com/flokkr/docker-krb5) | Highly insecure kerberos container, with an open REST api to request new kerberos keytab files. |
 
@@ -24,7 +28,7 @@ The containers are usually built on travis-ci and pushed to the docker hub inste
 
 ### Runtime
 
-Docker image creation is easy, just a few line to download and unpack the Apache projects. The tricky part is how the containers could work together: service discovery, configuration management, data locality, multi-tenancy, etc.
+Docker image creation is easy, just a few lines to download and unpack the Apache projects. The tricky part is how the containers could work together: service discovery, configuration management, data locality, multi-tenancy, etc.
 
 There are various examples how the containers could be used and each of them have a separated repository with the [runtime](https://github.com/search?q=org%3Aflokkr+docker)- prefix.
 
