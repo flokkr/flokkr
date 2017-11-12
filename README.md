@@ -1,6 +1,6 @@
 # Docker images for Open Source bigdata/hadoop projects
 
-Flokkr is an umbrella github organization to collect all of the containerization work for Apache bigdata/datascience projects such as Apache Hadoop or Apache Spark.
+Flokkr is an umbrella github organization to collect all of my containerization work for Apache bigdata/datascience projects such as Apache Hadoop or Apache Spark.
 
 On high level, there are two main type of the subprojects/git repos under this organization: Containers and runtime configuration examples.
 
@@ -9,6 +9,8 @@ If you would like to run a simple Apache bigdata project, open the repository an
 ### Containers
 
 All of the containers are based on one smart baseimage defined in [flokkr/docker-baseimage](https://github.com/flokkr/docker-baseimage). It contains all the configuration loading script (based on environment variables or consul servers) and other extensions (eg. btrace instrumentation).
+
+To get more information about the available environment variables check the [flokkr/launcher](https://github.com/flokkr/launcher) repository.
 
 All the other containers can be found with [docker-](https://github.com/search?q=org%3Aflokkr+docker) prefix under the flokkr organization.
 
